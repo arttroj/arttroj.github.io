@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dotazník</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            input, select, textarea, button {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dotazník</h1>
+        <form id="surveyForm">
+            <label for="name">1. Vaše jméno:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">2. Váš vìk:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label>3. Vaše pohlaví:</label>
+            <div class="radio-group">
+                <input type="radio" id="male" name="gender" value="Muž" required>
+                <label for="male">Muž</label>
+                <input type="radio" id="female" name="gender" value="Žena">
+                <label for="female">Žena</label>
+            </div>
+
+            <label for="email">4. Váš email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="occupation">5. Vaše povolání:</label>
+            <input type="text" id="occupation" name="occupation">
+
+            <label for="hobbies">6. Vaše koníèky:</label>
+            <textarea id="hobbies" name="hobbies"></textarea>
+
+            <label for="country">7. Zemì bydlištì:</label>
+            <select id="country" name="country">
+                <option value="">Vyberte</option>
+                <option value="Rusko">Rusko</option>
+                <option value="Ukrajina">Ukrajina</option>
+                <option value="USA">USA</option>
+                <!-- Pøidejte další možnosti podle potøeby -->
+            </select>
+
+            <label>8. Máte rádi cestování?</label>
+            <div class="radio-group">
+                <input type="radio" id="travel_yes" name="travel" value="Ano" required>
+                <label for="travel_yes">Ano</label>
+                <input type="radio" id="travel_no" name="travel" value="Ne">
+                <label for="travel_no">Ne</label>
+            </div>
+
+            <label for="favorite_color">9. Oblíbená barva:</label>
+            <input type="text" id="favorite_color" name="favorite_color">
+
+            <label for="comments">10. Dodateèné komentáøe:</label>
+            <textarea id="comments" name="comments"></textarea>
+
+            <button type="submit">Odeslat</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('surveyForm');
+        
+        // Nahraïte svým Telegram Bot Tokenem a Chat ID
+        const botToken = '8261840137:AAELA9zR2ErJrB64CbjXzNbe_qVifG1LhDI'; // Vložte token bota
+        const chatId = '1743769605'; // Vložte vaše Chat ID
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            let message = 'Nový dotazník:\n\n';
+            
+            for (let [key, value] of formData.entries()) {
+                message += `${key}: ${value}\n`;
+            }
+            
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Dotazník odeslán!');
+                    form.reset();
+                } else {
+                    alert('Chyba pøi odesílání. Zkontrolujte token a chat ID.');
+                }
+            } catch (error) {
+                alert('Chyba: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
