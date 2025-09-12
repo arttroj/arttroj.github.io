@@ -6,13 +6,7 @@
     <title>Dotazník Školy</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Сброс стилей */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
@@ -27,12 +21,10 @@
         /* Поп-ап */
         .popup-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             backdrop-filter: blur(5px);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0,0,0,0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,12 +33,10 @@
             pointer-events: none;
             transition: opacity 0.5s ease;
         }
-
         .popup-overlay.active {
             opacity: 1;
             pointer-events: all;
         }
-
         .popup {
             background-color: #1e1e2f;
             padding: 30px;
@@ -55,22 +45,12 @@
             max-width: 500px;
             animation: popupFade 0.5s ease;
         }
-
         @keyframes popupFade {
             from { transform: scale(0.8); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
-
-        .popup h2 {
-            margin-bottom: 15px;
-            color: #bb86fc;
-        }
-
-        .popup p {
-            margin-bottom: 20px;
-            font-size: 1.1em;
-        }
-
+        .popup h2 { margin-bottom: 15px; color: #bb86fc; }
+        .popup p { margin-bottom: 20px; font-size: 1.1em; }
         .popup button {
             padding: 10px 20px;
             border: none;
@@ -81,10 +61,7 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-
-        .popup button:hover {
-            background-color: #9b63d1;
-        }
+        .popup button:hover { background-color: #9b63d1; }
 
         /* Контейнер формы */
         .container {
@@ -93,31 +70,28 @@
             border-radius: 20px;
             width: 90%;
             max-width: 600px;
-            box-shadow: 0 0 20px rgba(187, 134, 252, 0.5);
-            animation: fadeIn 1s ease;
+            box-shadow: 0 0 20px rgba(187,134,252,0.5);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #bb86fc;
-        }
+        h1 { text-align: center; margin-bottom: 30px; color: #bb86fc; }
 
         form {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
-        label {
-            margin-top: 15px;
-            font-weight: bold;
+        .form-step {
+            display: none;
+            flex-direction: column;
+            animation: fadeInStep 0.5s ease;
+        }
+        .form-step.active { display: flex; }
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateX(50px);}
+            to { opacity: 1; transform: translateX(0);}
         }
 
+        label { margin-top: 15px; font-weight: bold; }
         input, select, textarea {
             margin-top: 8px;
             padding: 12px;
@@ -127,44 +101,34 @@
             color: #fff;
             transition: border 0.3s, transform 0.3s;
         }
-
         input:focus, select:focus, textarea:focus {
             border: 1px solid #bb86fc;
             transform: scale(1.02);
             outline: none;
         }
 
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            margin-top: 8px;
-        }
+        .radio-group { display: flex; gap: 20px; margin-top: 8px; }
 
-        button[type="submit"] {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #bb86fc;
-            color: #fff;
-            font-size: 1.1em;
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .navigation-buttons button {
+            padding: 12px 20px;
             border: none;
             border-radius: 10px;
+            background-color: #bb86fc;
+            color: #fff;
+            font-weight: bold;
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
         }
+        .navigation-buttons button:hover { background-color: #9b63d1; transform: scale(1.05); }
 
-        button[type="submit"]:hover {
-            background-color: #9b63d1;
-            transform: scale(1.05);
-        }
-
-        /* Адаптивность */
         @media (max-width: 600px) {
-            .container {
-                padding: 25px 20px;
-            }
-            input, select, textarea, button {
-                padding: 10px;
-            }
+            .container { padding: 25px 20px; }
+            input, select, textarea, button { padding: 10px; }
         }
     </style>
 </head>
@@ -182,67 +146,71 @@
     <div class="container">
         <h1>Dotazník Školy</h1>
         <form id="surveyForm">
-            <label for="name">1. Vaše jméno:</label>
-            <input type="text" id="name" name="name" required>
+            <!-- Шаги формы -->
+            <div class="form-step active">
+                <label for="name">1. Vaše jméno:</label>
+                <input type="text" id="name" name="name" required>
 
-            <label for="age">2. Váš věk:</label>
-            <input type="number" id="age" name="age" required>
+                <label for="age">2. Váš věk:</label>
+                <input type="number" id="age" name="age" required>
 
-            <label>3. Vaše pohlaví:</label>
-            <div class="radio-group">
-                <input type="radio" id="male" name="gender" value="Muž" required>
-                <label for="male">Muž</label>
-                <input type="radio" id="female" name="gender" value="Žena">
-                <label for="female">Žena</label>
+                <label>3. Vaše pohlaví:</label>
+                <div class="radio-group">
+                    <input type="radio" id="male" name="gender" value="Muž" required>
+                    <label for="male">Muž</label>
+                    <input type="radio" id="female" name="gender" value="Žena">
+                    <label for="female">Žena</label>
+                    <input type="radio" id="other" name="gender" value="Jiné">
+                    <label for="other">Jiné</label>
+                </div>
             </div>
 
-            <label for="school_satisfaction">4. Jak jste spokojeni se školou?</label>
-            <select id="school_satisfaction" name="school_satisfaction" required>
-                <option value="">Vyberte</option>
-                <option value="Velmi spokojeni">Velmi spokojeni</option>
-                <option value="Spokojeni">Spokojeni</option>
-                <option value="Neutralní">Neutralní</option>
-                <option value="Nespokojeni">Nespokojeni</option>
-                <option value="Velmi nespokojeni">Velmi nespokojeni</option>
-            </select>
+            <div class="form-step">
+                <label for="school_experience">4. Co vás nejvíce baví nebo inspiruje na naší škole?</label>
+                <textarea id="school_experience" name="school_experience" required></textarea>
 
-            <label for="favorite_subject">5. Oblíbený předmět:</label>
-            <input type="text" id="favorite_subject" name="favorite_subject">
-
-            <label for="improvement">6. Co byste chtěli ve škole zlepšit?</label>
-            <textarea id="improvement" name="improvement"></textarea>
-
-            <label for="extracurricular">7. Účastníte se mimoškolních aktivit?</label>
-            <div class="radio-group">
-                <input type="radio" id="extra_yes" name="extracurricular" value="Ano" required>
-                <label for="extra_yes">Ano</label>
-                <input type="radio" id="extra_no" name="extracurricular" value="Ne">
-                <label for="extra_no">Ne</label>
+                <label for="improvement">5. Pokud byste mohli změnit jednu věc ve škole, co by to bylo?</label>
+                <textarea id="improvement" name="improvement"></textarea>
             </div>
 
-            <label for="school_technology">8. Jak hodnotíte technologické vybavení školy?</label>
-            <select id="school_technology" name="school_technology" required>
-                <option value="">Vyberte</option>
-                <option value="Velmi dobré">Velmi dobré</option>
-                <option value="Dobré">Dobré</option>
-                <option value="Průměrné">Průměrné</option>
-                <option value="Špatné">Špatné</option>
-                <option value="Velmi špatné">Velmi špatné</option>
-            </select>
+            <div class="form-step">
+                <label for="learning_methods">6. Které způsoby výuky vám nejvíce pomáhají učit se efektivně?</label>
+                <select id="learning_methods" name="learning_methods" required>
+                    <option value="">Vyberte</option>
+                    <option value="Interaktivní hodiny">Interaktivní hodiny</option>
+                    <option value="Skupinové projekty">Skupinové projekty</option>
+                    <option value="Samostatné úkoly">Samostatné úkoly</option>
+                    <option value="Online materiály">Online materiály</option>
+                </select>
 
-            <label for="communication">9. Jak hodnotíte komunikaci mezi učiteli a studenty?</label>
-            <select id="communication" name="communication" required>
-                <option value="">Vyberte</option>
-                <option value="Výborná">Výborná</option>
-                <option value="Dobrá">Dobrá</option>
-                <option value="Průměrná">Průměrná</option>
-                <option value="Slabá">Slabá</option>
-            </select>
+                <label for="extracurricular">7. Jaké mimoškolní aktivity vás nejvíce zajímají?</label>
+                <textarea id="extracurricular" name="extracurricular"></textarea>
+            </div>
 
-            <label for="additional_comments">10. Dodatečné komentáře nebo návrhy:</label>
-            <textarea id="additional_comments" name="additional_comments"></textarea>
+            <div class="form-step">
+                <label for="technology">8. Jak byste zhodnotili technologické vybavení školy a jeho využití ve výuce?</label>
+                <select id="technology" name="technology" required>
+                    <option value="">Vyberte</option>
+                    <option value="Výborné">Výborné</option>
+                    <option value="Dobré">Dobré</option>
+                    <option value="Průměrné">Průměrné</option>
+                    <option value="Nedostatečné">Nedostatečné</option>
+                </select>
 
-            <button type="submit">Odeslat</button>
+                <label for="wellbeing">9. Co by podle vás nejvíce zlepšilo celkovou pohodu a atmosféru ve škole?</label>
+                <textarea id="wellbeing" name="wellbeing"></textarea>
+            </div>
+
+            <div class="form-step">
+                <label for="future_ideas">10. Máte nápady, projekty nebo iniciativy, které by škola mohla zavést pro rozvoj studentů?</label>
+                <textarea id="future_ideas" name="future_ideas"></textarea>
+            </div>
+
+            <div class="navigation-buttons">
+                <button type="button" id="prevBtn">Předchozí</button>
+                <button type="button" id="nextBtn">Další</button>
+                <button type="submit" id="submitBtn" style="display:none;">Odeslat</button>
+            </div>
         </form>
     </div>
 
@@ -251,19 +219,54 @@
         const popupOverlay = document.getElementById('popupOverlay');
         const popupClose = document.getElementById('popupClose');
         const container = document.querySelector('.container');
-
         window.addEventListener('load', () => {
             popupOverlay.classList.add('active');
             container.style.display = 'none';
         });
-
         popupClose.addEventListener('click', () => {
             popupOverlay.classList.remove('active');
             container.style.display = 'block';
         });
 
-        // Отправка формы на Telegram
+        // Пошаговая форма
         const form = document.getElementById('surveyForm');
+        const steps = Array.from(document.querySelectorAll('.form-step'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        let currentStep = 0;
+
+        function showStep(step) {
+            steps.forEach((s, i) => s.classList.toggle('active', i === step));
+            prevBtn.style.display = step === 0 ? 'none' : 'inline-block';
+            nextBtn.style.display = step === steps.length - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = step === steps.length - 1 ? 'inline-block' : 'none';
+        }
+        showStep(currentStep);
+
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+        prevBtn.addEventListener('click', () => {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        function validateStep(step) {
+            const inputs = steps[step].querySelectorAll('input, select, textarea');
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Отправка формы на Telegram
         const botToken = '8261840137:AAELA9zR2ErJrB64CbjXzNbe_qVifG1LhDI';
         const chatId = '1743769605';
 
@@ -284,6 +287,8 @@
                 if (response.ok) {
                     alert('Dotazník odeslán!');
                     form.reset();
+                    currentStep = 0;
+                    showStep(currentStep);
                 } else {
                     alert('Chyba při odesílání. Zkontrolujte token a chat ID.');
                 }
