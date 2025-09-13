@@ -140,10 +140,16 @@
       height: 100%; width: 0%;
       background: linear-gradient(90deg, var(--primary), var(--primary-2), var(--accent));
       background-size: 300% 100%;
-      animation: gradientMove 4s linear infinite;
+      background-repeat: repeat-x;       /* фикс резкого сброса */
+      animation: gradientMove 6s linear infinite;
       transition: width .35s ease;
     }
-    @keyframes gradientMove { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+    
+    @keyframes gradientMove {
+      from { background-position: 0% 50%; }
+      to   { background-position: 200% 50%; } /* было 100%, увеличил */
+    }
+
 
     /* Stepper dots — mobile-safe, equal size */
     .stepper { 
@@ -631,6 +637,7 @@
   </script>
 </body>
 </html>
+
 
 
 
