@@ -275,9 +275,15 @@
     <header class="hero" role="banner">
       <div class="logo" aria-hidden="true">
         <!-- Simple logo icon -->
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 3l3.5 6H8.5L12 3Z" fill="currentColor"/>
-          <rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor" opacity=".6"/>
+        <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+            <!-- контур листа -->
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+            <!-- загнутый угол -->
+            <path d="M14 3v5h5"/>
+            <!-- легкие линии 'текста' -->
+            <path d="M8 9h4M8 13h8M8 17h8" opacity="0.7"/>
+          </g>
         </svg>
       </div>
       <div>
@@ -625,5 +631,6 @@
   </script>
 </body>
 </html>
+
 
 
