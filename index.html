@@ -145,14 +145,37 @@
     }
     @keyframes gradientMove { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
 
-    .stepper { display: flex; gap: 10px; margin-top: 12px; }
-    .step-dot {
-      width: 12px; height: 12px; border-radius: 50%;
-      background: rgba(255,255,255,.15);
-      outline: 1px solid rgba(255,255,255,.08);
-      transition: transform .2s ease, background .2s ease;
+    /* Stepper dots — mobile-safe, equal size */
+    .stepper { 
+      display: flex; 
+      gap: 10px; 
+      margin-top: 12px; 
+      align-items: center; /* чтобы не "сплющивались" по baseline */
     }
-    .step-dot.active { background: var(--primary); transform: scale(1.15); }
+    
+    .step-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      aspect-ratio: 1 / 1;          /* держим идеальный круг на мобилках */
+      padding: 0;                   /* убираем дефолтные отступы кнопки */
+      border: 0;                    /* убираем дефолтную рамку кнопки */
+      line-height: 0;               /* исключаем влияние текста */
+      border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      outline: 1px solid rgba(255,255,255,.12);
+      -webkit-appearance: none;     /* iOS Safari */
+      appearance: none;
+      transition: background .2s ease, box-shadow .2s ease;
+      transform: none !important;   /* на всякий случай перекрываем scale */
+    }
+    
+    .step-dot.active {
+      background: var(--primary);
+      box-shadow: 0 0 0 2px rgba(187,134,252,.35); /* подсветка вместо scale */
+      transform: none;              /* одинаковый размер с пустыми */
+    }
+
 
     /* ========================
        FORM
@@ -602,4 +625,5 @@
   </script>
 </body>
 </html>
+
 
